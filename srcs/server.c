@@ -5,15 +5,26 @@
 #include <unistd.h>
 #include "minitalk.h"
 
-void	server_sighandler(int sig, siginfo_t *info, void *ucontext)
+static void	server_sighandler(int sig, siginfo_t *info, void *ucontext)
 {
-	int	client_pid;
+	static int	c;
+	static int	bit_count = 0;
+	static int	client_pid;
 
 	(void)ucontext;
 	client_pid = info->si_pid; /* Sending process ID */
-
-	if (sig == SIGUSR1)
-		printf("signal correct");
+	// if (sig == SIGUSR1)
+	// 	c += 1;
+	// if (++bit_count == 8)
+	// {
+	// 	bit_count = 0;
+	// 	if (!c)
+	// 		kill(client_pid, SIGUSR1);
+	// 	write(1, &c, 1);
+	// 	c = 0;
+	// }
+	// else 
+	// 	c <<= 1;
 }
 
 int main(void)
@@ -24,8 +35,9 @@ int main(void)
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
-	printf("Server PID: %d\n", getpid()); /* change to ft_printf */
-	
+	ft_printf("Server PID: %d\n", getpid()); /* change to ft_printf */
+	while (1)
+		pause();	
 }
 
 // sigaction structure

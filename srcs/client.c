@@ -7,13 +7,32 @@
 void	feedback(int sig)
 {
 	(void)sig;
-	write (1, "received", 8);
+	write (1, "Message received by server\n", 28);
+	exit (0);
 }
 
-void	client_sighandler(int sig, char *message)
+void	client_sighandler(int pid, char *message)
 {
-	printf("%d", sig);
-	printf("%s", message);
+	int	bit_count;
+	int	byte_count;
+	char c;
+
+	byte_count = 0;
+	while (message[byte_count] - 1) // WHY minus 1?
+	{
+		c = message[byte_count];
+		bit_count = 8;
+		while (--bit_count >= 0)
+		{
+			usleep(30); // with this only prints properly
+			if ((c >> bit_count) & 1)
+				kill(pid, SIGUSR1);
+			else
+				kill(pid, SIGUSR2);
+			usleep(30);
+		}
+		byte_count++;
+	}
 }
 
 int main (int argc, char **argv)
@@ -42,3 +61,18 @@ int main (int argc, char **argv)
 //				- uses struct sigaction arguments to specify the handler function pointer and other indicators
 // signal() - signal(int sig, void *function (int))
 //			- sets a function to handle signal i.e. a signal handler with signal number sig
+
+// bit-shifting
+// loop starts by shifting the first left bit to the end (i = 7)
+// then compare with & 1 
+// if it's 1 return 1 , if its 0 return 0
+// kill signal is sent starting with first left bit to final 8th bit
+// (following the bits order)
+//
+// the 8 bits is calculated by the number of 2 powered number of shifts)
+// num = 2 ^ num of shifts
+// W : ascii 87 = 64 + 16 + 4 + 2 + 1 
+// the successful numbers above represents 1 , if not then 0
+// ex: 2^7 = 128 = 0 | 2^6 = 64 = 1 | 2^5 = 32 = 0
+// https://www.binaryhexconverter.com/ascii-text-to-binary-converter
+// decimal numbers is opposite using number equals 1 over (2 power number of shifts)
