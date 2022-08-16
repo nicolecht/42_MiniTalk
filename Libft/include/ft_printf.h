@@ -6,7 +6,7 @@
 /*   By: nchee <nchee@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/13 19:06:39 by nchee             #+#    #+#             */
-/*   Updated: 2022/07/18 14:10:01 by nchee            ###   ########.fr       */
+/*   Updated: 2022/08/16 15:09:52 by nchee            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <unistd.h>
 # include <stdint.h>
 # include <stdlib.h>
-# include <libft.h>
+# include "libft.h"
 
 int		ft_printf(const char *str, ...);
 int		ft_formats(va_list args, const char format);

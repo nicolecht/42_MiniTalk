@@ -6,9 +6,11 @@
 #    By: nchee <nchee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/13 16:30:03 by nchee             #+#    #+#              #
-#    Updated: 2022/08/11 19:02:45 by nchee            ###   ########.fr        #
+#    Updated: 2022/08/16 17:08:35 by nchee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+SHELL		=	/bin/bash
 
 NAME		= Libft.a
 INCLUDES	= include
@@ -19,10 +21,20 @@ CC			= gcc
 CFLAGS		= -Wall -Wextra -Werror -I
 AR			= ar -rcs
 RM			= rm -f
+ECHO		= echo -e
 
-DEF_COLOUR	= \033[0;39m
-GREEN		= \033[0;92m
-YELLOW		= \033[0;93m
+#Colors
+
+DEF_COLOR	=	\033[0;39m
+ORANGE		=	\033[0;33m
+GRAY		=	\033[0;90m
+RED			=	\033[0;91m
+GREEN		=	\033[0;92m
+YELLOW		=	\033[0;93m
+BLUE		=	\033[0;94m
+MAGENTA		=	\033[0;95m
+CYAN		=	\033[0;96m
+WHITE		=	\033[0;97m
 
 #Sources
 
@@ -53,14 +65,20 @@ OBJS		= $(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRCS_FILES)))
 
 OBJF		= .cache_exists
 
+start:		
+			@echo -e -n "$(YELLOW)[LIBFT]:\t$(DEF_COLOR)"
+			@echo -e -n "$(RED)[$(DEF_COLOR)"
+			@make all
+
 all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			@$(AR) $(NAME) $(OBJS)
-			@echo "$(GREEN)Libft Complied$(DEF_COLOR)"
+			@echo -e -n "$(RED)]$(DEF_COLOR)"
+			@$(ECHO) "$(GREEN) => Libft Complied$(DEF_COLOR)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJF)
-			@echo "$(YELLOW)Compiling: $< $(DEF_COLOUR)"
+			@echo -e -n "$(ORANGE)=$(DEF_COLOR)"
 			@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJF):	
@@ -70,13 +88,14 @@ $(OBJF):
 
 clean:
 			@$(RM) -rf $(OBJS_DIR)
-			@echo "$(GREEN)Libft Object Files Cleaned$(DEF_COLOR)"
+			@$(RM) $(OBJF)
+			@$(ECHO) -n "$(BLUE)[LIBFT]:\tObject files$(DEF_COLOR)$(GREEN)  => Cleaned$(DEF_COLOR)\n"
 
 fclean:		clean
 			@$(RM) $(NAME)
-			@echo "$(GREEN)Libft Exec Files Cleaned$(DEF_COLOR)"
+			@$(ECHO) -n "$(CYAN)[LIBFT]:\tExec. files$(DEF_COLOR)$(GREEN)  => Cleaned$(DEF_COLOR)\n"
 
-re:			fclean all
-			@echo "$(GREEN)Libft Cleaned and Rebuilt Everything$(DEF_COLOR)"
+re:			fclean start
+			@$(ECHO) -n "$(MAGENTA)[LIBFT]:\tCleaned and Rebuilt\n$(DEF_COLOR)"
 
-.PHONY:		all clean fclean re
+.PHONY:		start all clean fclean re
