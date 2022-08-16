@@ -6,9 +6,11 @@
 #    By: nchee <nchee@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/07/13 16:30:03 by nchee             #+#    #+#              #
-#    Updated: 2022/08/16 16:50:00 by nchee            ###   ########.fr        #
+#    Updated: 2022/08/16 17:21:26 by nchee            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+SHELL		=	/bin/bash
 
 NAME		= MiniTalk.a
 CLIENT		= client
@@ -52,20 +54,22 @@ OBJF		= .cache_exists
 start:		
 			@make -C $(LIBFT)
 			@cp Libft/Libft.a $(MAIN_DIR)
+			@$(ECHO) -n "$(YELLOW)[MINITALK]:\t$(DEF_COLOR)"
+			@$(ECHO) -n "$(RED)[$(DEF_COLOR)"
 			@make all
 
 all:		$(CLIENT) $(SERVER)
 
 $(CLIENT):	$(OBJS_CL) $(OBJF)
 			@$(CC) $(CFLAGS) $(OBJS_CL) $(INCLUDES) $(LIBFT_LIB) -o $(CLIENT)
-			@echo "$(GREEN)Client Complied$(DEF_COLOR)"
 
 $(SERVER):	$(OBJS_SV) $(OBJF)
+			@$(ECHO) -n "$(RED)]$(DEF_COLOR)"
 			@$(CC) $(CFLAGS) $(OBJS_SV) $(INCLUDES) $(LIBFT_LIB) -o $(SERVER)
-			@echo "$(GREEN)Server Complied$(DEF_COLOR)"
+			@$(ECHO) "$(GREEN) => MiniTalk Complied$(DEF_COLOR)"
 
 $(OBJS_DIR)%.o: $(SRCS_DIR)%.c | $(OBJF)
-			@echo "$(YELLOW)Compiling: $< $(DEF_COLOUR)"
+			@$(ECHO) -n "$(ORANGE)=$(DEF_COLOR)"
 			@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(OBJF):	
@@ -75,16 +79,16 @@ clean:
 			@$(RM) -rf $(OBJS_DIR)
 			@$(RM) $(OBJF)
 			@make clean -C $(LIBFT)
-			@echo "$(GREEN)MiniTalk Object Files Cleaned$(DEF_COLOR)"
+			@$(ECHO) -n "$(BLUE)[MINITALK]:\tobject files$(DEF_COLOR)$(GREEN)  => Cleaned!$(DEF_COLOR)\n"
 
 fclean:		clean
 			@$(RM) $(CLIENT) $(SERVER)
 			@$(RM) $(LIBFT_LIB)
 			@$(RM) $(LIBFT)/Libft.a
-			@echo "$(GREEN)Libft Exec Files Cleaned$(DEF_COLOR)"
-			@echo "$(GREEN)MiniTalk Exec Files Cleaned$(DEF_COLOR)"
+			@$(ECHO) -n "$(CYAN)[LIBFT]:\texec. files$(DEF_COLOR)$(GREEN)  => Cleaned!$(DEF_COLOR)\n"
+			@$(ECHO) -n "$(CYAN)[MINITALK]:\texec. files$(DEF_COLOR)$(GREEN)  => Cleaned!$(DEF_COLOR)\n"
 
 re:			fclean start
-			@echo "$(GREEN)MiniTalk Cleaned and Rebuilt Everything$(DEF_COLOR)"
+			@$(ECHO) -n "$(MAGENTA)[MINITALK]:\tCleaned and Rebuilt\n$(DEF_COLOR)"
 
 .PHONY:		start all clean fclean re
