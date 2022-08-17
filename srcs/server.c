@@ -1,5 +1,3 @@
-// rmb to add linebreak and error validation for wrong server pid input by client
-
 #include <signal.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -7,24 +5,27 @@
 
 static void	server_sighandler(int sig, siginfo_t *info, void *ucontext)
 {
-	static int	c;
-	static int	bit_count = 0;
+	static int	c; // 0000 0000
+	static int	bit_count;
 	static int	client_pid;
 
 	(void)ucontext;
 	client_pid = info->si_pid; /* Sending process ID */
-	// if (sig == SIGUSR1)
-	// 	c += 1;
-	// if (++bit_count == 8)
-	// {
-	// 	bit_count = 0;
-	// 	if (!c)
-	// 		kill(client_pid, SIGUSR1);
-	// 	write(1, &c, 1);
-	// 	c = 0;
-	// }
-	// else 
-	// 	c <<= 1;
+	if (sig == SIGUSR1)
+		c += 1;
+	if (++bit_count == 8)
+	{
+		bit_count = 0;
+		if (!c) // if c equals null, send signal back as response to client
+		{
+			kill(client_pid, SIGUSR1);
+			write(1, "\n", 1);
+		}
+		write(1, &c, 1);
+		c = 0;
+	}
+	else 
+		c <<= 1;
 }
 
 int main(void)
