@@ -1,6 +1,15 @@
-#include <signal.h>
-#include <stdio.h>
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nchee <nchee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/18 11:43:44 by nchee             #+#    #+#             */
+/*   Updated: 2022/08/18 11:55:11 by nchee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 static void	server_sighandler(int sig, siginfo_t *info, void *ucontext)
@@ -24,20 +33,18 @@ static void	server_sighandler(int sig, siginfo_t *info, void *ucontext)
 		write(1, &c, 1);
 		c = 0;
 	}
-	else 
+	else
 		c <<= 1;
 }
 
-int main(void)
+int	main(void)
 {
-	 struct sigaction	act; // struct named sigaction with variable act
-
+	struct sigaction	act; // struct named sigaction with variable act
 	act.sa_sigaction = server_sighandler; // access sa_sigaction of var act using member operator "."
 	act.sa_flags = SA_SIGINFO;
 	sigaction(SIGUSR1, &act, NULL);
 	sigaction(SIGUSR2, &act, NULL);
 	ft_printf("Server PID: %d\n", getpid()); /* change to ft_printf */
 	while (1)
-		pause();	
+		pause();
 }
-

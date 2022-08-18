@@ -1,19 +1,26 @@
-#include <signal.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nchee <nchee@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/18 11:43:46 by nchee             #+#    #+#             */
+/*   Updated: 2022/08/18 11:55:11 by nchee            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minitalk.h"
 
 int	ft_strisdigit(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (str[i] == '-')
 		i++;
 	while (str[i])
 	{
-
 		if (!ft_isdigit(str[i]))
 			return (0);
 		i++;
@@ -30,9 +37,9 @@ void	feedback(int sig)
 
 void	client_sighandler(int pid, char *string)
 {
-	int	bit_count;
-	int	byte_count;
-	char c;
+	int		bit_count;
+	int		byte_count;
+	char	c;
 
 	byte_count = 0;
 	while (string[byte_count] - 1)
@@ -51,7 +58,7 @@ void	client_sighandler(int pid, char *string)
 	}
 }
 
-int main (int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	signal(SIGUSR1, feedback);
 	if (argc != 3 || !ft_strisdigit(argv[1]) || !*argv[2])
